@@ -1,0 +1,31 @@
+resources:
+  jobs:
+    linkedin_bronze:
+      name: linkedin_bronze
+      tasks:
+        - task_key: ReadConfigExtractFiles
+          sql_task:
+            query:
+              query_id: e8279788-7a69-4d15-b98b-7a9f8eba88bb
+            warehouse_id: 4d2ec04f045af269
+        - task_key: ExtractFile
+          depends_on:
+            - task_key: ReadConfigExtractFiles
+          for_each_task:
+            inputs: "{{tasks.ReadConfigExtractFiles.output.rows}}"
+            concurrency: 4
+            task:
+              task_key: ExtractFile_iteration
+              notebook_task:
+                notebook_path: /Workspace/Users/tanssive@gmail.com/linkedin-jobs/Notebooks/bronze/10_Get_Data
+                base_parameters:
+                  directory: "{{input.Directory}}"
+                  file_name: "{{input.FileName}}"
+                  extension: "{{input.FileExtension}}"
+                  catalog: "{{input.Catalog}}"
+                  schema: "{{input.Schema}}"
+                  tbl_name: "{{input.TableName}}"
+                source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
