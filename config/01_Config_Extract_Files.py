@@ -9,7 +9,19 @@
 # COMMAND ----------
 
 # DBTITLE 1,Config List
-selsesds
+cfg_data = [
+    ("companies", "companies", "csv", "linkedin", "bronze", "DimCompanies"),
+    ("companies", "company_industries", "csv", "linkedin", "bronze", "DimCompanyIndustries"),
+    ("companies", "company_specialities", "csv", "linkedin", "bronze", "DimCompanySpecialities"),
+    ("companies", "employee_counts", "csv", "linkedin", "bronze", "DimEmployeeCounts"),
+    ("jobs", "benefits", "csv", "linkedin", "bronze", "DimBenefits"),
+    ("jobs", "job_industries", "csv", "linkedin", "bronze", "DimJobIndustries"),
+    ("jobs", "job_skills", "csv", "linkedin", "bronze", "DimJobSkills"),
+    ("jobs", "salaries", "csv", "linkedin", "bronze", "DimSalaries"),
+    ("mappings", "industries", "csv", "linkedin", "bronze", "DimIndustriesMapping"),
+    ("mappings", "skills", "csv", "linkedin", "bronze", "DimSkillsMapping"),
+    ("", "postings", "csv", "linkedin", "bronze", "DimPostings"),
+]
 
 # COMMAND ----------
 
