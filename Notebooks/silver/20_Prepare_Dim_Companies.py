@@ -41,9 +41,9 @@ create_silver_dim_company()
     spark.read.table("linkedin.bronze.DimCompanies")
     .select(
         f.col("company_id").alias("CompanyId"),
-        f.ifnull(f.col("name"), f.lit("Unknown")).alias("CompanyName"),
+        f.coalesce(f.col("name"), f.lit("Unknown")).alias("CompanyName"),
         f.col("description").alias("Description"),
-        f.ifnull(f.col("company_size"), f.lit(0)).alias("CompanySize"),
+        f.coalesce(f.col("company_size"), f.lit(0)).alias("CompanySize"),
         f.when(f.col("state") == "0", "Unknown").otherwise(f.col("state")).alias("State"),
         f.when(f.col("country") == "0", "Unknown").otherwise(f.col("country")).alias("Country"),
         f.when(f.col("city") == "0", "Unknown").otherwise(f.col("city")).alias("City"),
