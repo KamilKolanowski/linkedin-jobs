@@ -1,8 +1,8 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # PrepareDimCompanies
-# MAGIC > cmd2 - install delta-spark library
-# MAGIC > cmd3 - create silver dim table
+# MAGIC > cmd2 - install delta-spark library  
+# MAGIC > cmd3 - create silver dim table  
 # MAGIC > cmd4 - load data into silver layer
 
 # COMMAND ----------
