@@ -28,6 +28,8 @@ def create_silver_dim_company() -> None:
         .addColumn("City", dataType=StringType(), nullable=True)
         .addColumn("ZipCode", dataType=StringType(), nullable=True)
         .addColumn("Address", dataType=StringType(), nullable=True)
+        .addColumn("Industry", dataType=StringType(), nullable=True)
+        .addColumn("Speciality", dataType=StringType(), nullable=True)
         .addColumn("Url", dataType=StringType(), nullable=True)
         .addColumn("CreatedDateTime", dataType=TimestampType(), nullable=False)
         .execute()
@@ -37,8 +39,14 @@ create_silver_dim_company()
 
 # COMMAND ----------
 
+dim_companies = spark.read.table("linkedin.bronze.DimCompanies")
+dim_company_industries = spark.read.table("linkedin.bronze.DimCompanyIndustries")
+dim_company_specialities = spark.read.table("linkedin.bronze.DimCompanySpecialities")
+
 ( 
-    spark.read.table("linkedin.bronze.DimCompanies")
+    dim_companies
+    .join(dim_company_industries, on="company_id", how="left")
+    .join(dim_company_specialities, on="company_id", how="left")
     .select(
         f.col("company_id").alias("CompanyId"),
         f.coalesce(f.col("name"), f.lit("Unknown")).alias("CompanyName"),
@@ -49,6 +57,8 @@ create_silver_dim_company()
         f.when(f.col("city") == "0", "Unknown").otherwise(f.col("city")).alias("City"),
         f.when(f.col("zip_code") == "0", "Unknown").otherwise(f.col("zip_code")).alias("ZipCode"),
         f.when(f.col("address") == "0", "Unknown").otherwise(f.col("address")).alias("Address"),
+        f.col("industry").alias("Industry"),
+        f.col("speciality").alias("Speciality"),
         f.col("url").alias("Url"),
         f.current_timestamp().alias("CreatedDateTime")
     )
