@@ -13,11 +13,11 @@ cfg_data = [
     ("companies", "companies", "csv", "linkedin", "bronze", "DimCompanies"),
     ("companies", "company_industries", "csv", "linkedin", "bronze", "DimCompanyIndustries"),
     ("companies", "company_specialities", "csv", "linkedin", "bronze", "DimCompanySpecialities"),
-    ("companies", "employee_counts", "csv", "linkedin", "bronze", "DimEmployeeCounts"),
+    ("companies", "employee_counts", "csv", "linkedin", "bronze", "FactEmployeeCounts"),
     ("jobs", "benefits", "csv", "linkedin", "bronze", "DimBenefits"),
     ("jobs", "job_industries", "csv", "linkedin", "bronze", "DimJobIndustries"),
     ("jobs", "job_skills", "csv", "linkedin", "bronze", "DimJobSkills"),
-    ("jobs", "salaries", "csv", "linkedin", "bronze", "DimSalaries"),
+    ("jobs", "salaries", "csv", "linkedin", "bronze", "FactSalaries"),
     ("mappings", "industries", "csv", "linkedin", "bronze", "DimIndustriesMapping"),
     ("mappings", "skills", "csv", "linkedin", "bronze", "DimSkillsMapping"),
     ("", "postings", "csv", "linkedin", "bronze", "DimPostings"),
@@ -45,6 +45,14 @@ def update_config(config_data: List[tuple[str, ...]]) -> None:
                 AND target.FileName = source.FileName"""
             )
             .whenNotMatchedInsert(values={
+                "Directory": "source.Directory",
+                "FileName": "source.FileName", 
+                "FileExtension": "source.FileExtension",
+                "Catalog": "source.Catalog",
+                "Schema": "source.Schema",
+                "TableName": "source.TableName"
+            })
+            .whenMatchedUpdate(set={
                 "Directory": "source.Directory",
                 "FileName": "source.FileName", 
                 "FileExtension": "source.FileExtension",
