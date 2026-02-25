@@ -52,6 +52,14 @@ def update_config(config_data: List[tuple[str, ...]]) -> None:
                 "Schema": "source.Schema",
                 "TableName": "source.TableName"
             })
+            .whenMatchedUpdate(set={
+                "Directory": "source.Directory",
+                "FileName": "source.FileName", 
+                "FileExtension": "source.FileExtension",
+                "Catalog": "source.Catalog",
+                "Schema": "source.Schema",
+                "TableName": "source.TableName"
+            })
             .execute()
     )
 
